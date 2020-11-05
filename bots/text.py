@@ -1,7 +1,9 @@
-from typing import List
+import re
 
+import pysbd
 import Algorithmia
 
+from typing import List
 from decouple import config as env
 
 from bots.base import Bot
@@ -9,6 +11,7 @@ from bots.base import Bot
 
 class TextRobot(Bot):
     name = 'Text Robot'
+    __segmenter = pysbd.Segmenter(language='en', clean=False)
 
     @staticmethod
     async def instantiate_and_return_algorithmia_client() -> Algorithmia:
@@ -30,6 +33,15 @@ class TextRobot(Bot):
 
         return ' '.join(text_without_blank_lines_and_markdown)
 
+    async def remove_dates_in_parentheses(self, text: str) -> str:
+        self.logger.log('Removing dates from the text...')
+
+        text_without_dates = re.sub(
+            r'\(\w{1,} \d{2}, \d{4} – \w{1,} \d{2}, \d{4}\)', '', text
+        )
+
+        return text_without_dates
+
     async def fetch_content_from_wikipedia(self) -> None:
         client = await self.instantiate_and_return_algorithmia_client()
 
@@ -50,10 +62,25 @@ class TextRobot(Bot):
             text=self.state.source_content_original
         )
 
-        print(cleaned_text)
+        text_without_dates = await self.remove_dates_in_parentheses(
+            text=cleaned_text
+        )
+
+        self.state.update(source_sanitized_content=text_without_dates)
 
     async def break_content_into_sentences(self) -> None:
-        pass
+        self.logger.log('Breaking the text in sentences...')
+
+        sentences = self.__segmenter.segment(
+            self.state.source_sanitized_content
+        )
+
+        sentences_list = list(map(
+            lambda sentence: {'text': sentence, 'keywords': [], 'images': []},
+            sentences
+        ))
+
+        self.state.update(sentences=sentences_list)
 
     async def run(self) -> None:
         await super().run()
@@ -63,4 +90,3 @@ class TextRobot(Bot):
         await self.break_content_into_sentences()
 
         await self.stop()
-
