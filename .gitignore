@@ -1,2 +1,7 @@
+# Environment
 venv
 .env
+
+# Cache
+**/.mypy_cache
+**/__pycache__/

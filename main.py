@@ -1,3 +1,4 @@
+"""Contains the orchestrator object and the entry point to tun the robots."""
 import asyncio
 
 from bots.base import State
@@ -5,14 +6,25 @@ from bots.text import TextRobot
 
 
 class Orchestrator:
-    text_robot = TextRobot()
+    """
+    Orchestrates all the flow. It is responsible for run each one of the robots.
+    """
     state = State()
 
+    # Registered robots.
+    text_robot = TextRobot()
+
     async def ask_and_return_search_term(self) -> None:
+        """
+        Asks for the user write an search term and stores it in the state.
+        """
         search_term: str = input('\nType a search term: ')
         self.state.update(search_term=search_term)
 
     async def ask_and_return_prefix(self) -> None:
+        """
+        Asks for the user select an prefix and stores it in the state.
+        """
         prefixes = ('who is', 'what is', 'The history of')
 
         prefixes_with_indexes: str = '\n'.join(list(map(
@@ -29,12 +41,14 @@ class Orchestrator:
         self.state.update(prefix=prefixes[prefix_index - 1])
         print('\n')
 
-    async def retrieve_data_to_initialize_robots(self) -> None:
+    async def start(self) -> None:
+        """
+        Starts the orchestrator asking for the user the needed data and run the
+        bots.
+        """
         await self.ask_and_return_search_term()
         await self.ask_and_return_prefix()
 
-    async def start(self):
-        await self.retrieve_data_to_initialize_robots()
         await self.text_robot.run()
 
 

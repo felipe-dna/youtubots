@@ -1,0 +1,28 @@
+repos:
+-   repo: https://github.com/PyCQA/prospector
+    rev: 1.3.1
+    hooks:
+    -   id: prospector
+# https://github.com/pre-commit/mirrors-mypy
+-   repo: https://github.com/pre-commit/mirrors-mypy
+    rev: ''
+    hooks:
+    -   id: mypy
+        args: [--ignore-missing-imports]
+        additional_dependencies: []
+# https://github.com/pre-commit/mirrors-isort
+-   repo: https://github.com/pre-commit/mirrors-isort
+    rev: ''
+    hooks:
+    -   id: isort
+# https://github.com/pre-commit/mirrors-pylint
+-   repo: https://github.com/pre-commit/mirrors-pylint
+    rev: ''
+    hooks:
+    -   id: pylint
+        args: [--disable, import-error]
+# https://github.com/pre-commit/mirrors-autopep8
+-   repo: https://github.com/pre-commit/mirrors-autopep8
+    rev: ''
+    hooks:
+    -   id: autopep8

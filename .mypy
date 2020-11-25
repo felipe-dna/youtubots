@@ -1,0 +1,2 @@
+[mypy-bots.*]
+ignore_missing_imports = True
