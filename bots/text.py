@@ -55,13 +55,9 @@ class TextRobot(Bot):
 
         :return: An NaturalLanguageUnderstanding instance.
         """
-        __nlu = Nlu(
-            version='2018-11-16',
-            authenticator=IAMAuthenticator(
-                apikey=env('IBM_WATSON_API_KEY'),
-                url=env('IBM_WATSON_URL')
-            )
-        )
+        __authenticator = IAMAuthenticator(env('IBM_WATSON_API_KEY'))
+        __nlu = Nlu(version='2018-11-16', authenticator=__authenticator)
+        __nlu.set_service_url(env('IBM_WATSON_API_URL'))
 
         return __nlu
 
@@ -84,7 +80,7 @@ class TextRobot(Bot):
         all_lines: List[str] = text.split('\n')
 
         text_without_blank_lines_and_markdown: List[str] = list(filter(
-            lambda line: len(line) == 0 or line.startswith('='),
+            lambda line: not (len(line) == 0 or line.startswith('=')),
             all_lines
         ))
 
@@ -142,9 +138,10 @@ class TextRobot(Bot):
             features={'keywords': {}}
         )
 
+        response_result: List[Dict[str, Any]] = response.result['keywords']
+
         keywords: Set[str] = set(map(
-            lambda keyword: keyword['text'],
-            response
+            lambda keyword: keyword['text'], response_result
         ))
 
         return keywords
