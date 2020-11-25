@@ -7,8 +7,10 @@ name = "pypi"
 algorithmia = "*"
 python-decouple = "*"
 pysbd = "*"
+ibm-watson = ">=4.7.1"
 
 [dev-packages]
+pre-commit = "*"
 
 [requires]
 python_version = "3.8"
