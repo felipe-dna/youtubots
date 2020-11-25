@@ -54,7 +54,7 @@ pyflakes:
 pylint:
   disable:
     - bad-builtin
-    - too-few-public-methods
+    - R0903
   options:
     max-locals: 15
     max-returns: 6
