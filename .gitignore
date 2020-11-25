@@ -3,4 +3,5 @@ venv
 .env
 
 # Cache
-.mypy_cache
+**/.mypy_cache
+**/__pycache__/
