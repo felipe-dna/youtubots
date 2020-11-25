@@ -51,6 +51,9 @@ pyflakes:
     - F403
     - F810
 
+pylint:
+	run: false
+
 pyroma:
   disable:
     - PYR15
