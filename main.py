@@ -5,8 +5,9 @@ from bots.text import TextRobot
 
 
 class Orchestrator:
-    text_robot = TextRobot()
     state = State()
+
+    text_robot = TextRobot()
 
     async def ask_and_return_search_term(self) -> None:
         search_term: str = input('\nType a search term: ')
