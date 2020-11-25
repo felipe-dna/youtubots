@@ -8,7 +8,7 @@ repos:
     rev: ''
     hooks:
     -   id: mypy
-        args: []
+        args: [--ignore-missing-imports]
         additional_dependencies: []
 # https://github.com/pre-commit/mirrors-isort
 -   repo: https://github.com/pre-commit/mirrors-isort
