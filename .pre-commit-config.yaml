@@ -20,6 +20,7 @@ repos:
     rev: ''
     hooks:
     -   id: pylint
+        args: [--rcfile, ./.pylintrc]
 # https://github.com/pre-commit/mirrors-autopep8
 -   repo: https://github.com/pre-commit/mirrors-autopep8
     rev: ''
